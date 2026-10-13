@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>デジタル図鑑アプリ 仕様書(仮)</title>
+<style>
+:root {
+  --primary: #2563eb;
+  --bg-dark: #0f172a;
+  --card-bg: #1e293b;
+  --text-main: #f8fafc;
+  --text-sub: #94a3b8;
+  --accent: #38bdf8;
+  --border: #334155;
+  --green: #34d399;
+  --amber: #fbbf24;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", Meiryo, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  margin: 0;
+  padding: 2rem;
+  line-height: 1.75;
+}
+.container { max-width: 1080px; margin: 0 auto; }
+header {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+h1 { color: var(--accent); font-size: 1.9rem; margin: 0 0 .5rem; line-height: 1.4; }
+.meta-info { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; color: var(--text-sub); font-size: .9rem; }
+.nav-group { display: flex; flex-wrap: wrap; gap: .5rem; }
+.btn {
+  display: inline-block; color: white; background: var(--primary);
+  text-decoration: none; padding: .5rem .85rem; border-radius: 6px;
+  font-weight: 600; font-size: .85rem; border: 1px solid rgba(255,255,255,.1);
+}
+.btn:hover { background: #1d4ed8; }
+section {
+  background: var(--card-bg); border-radius: 8px; padding: 1.5rem;
+  margin-bottom: 1.5rem; border: 1px solid var(--border);
+  scroll-margin-top: 1rem;
+}
+h2 {
+  color: var(--accent); font-size: 1.35rem; border-bottom: 1px solid var(--border);
+  padding-bottom: .5rem; margin: 0 0 1rem;
+}
+h3 { color: #7dd3fc; font-size: 1.08rem; margin: 1.4rem 0 .5rem; }
+h4 { color: var(--text-main); margin: 1rem 0 .3rem; }
+p { margin: .5rem 0 .8rem; }
+ul, ol { padding-left: 1.4rem; }
+li { margin-bottom: .35rem; }
+table { width: 100%; border-collapse: collapse; margin: .8rem 0 1rem; }
+th, td { border: 1px solid var(--border); padding: .75rem; text-align: left; vertical-align: top; }
+th { background: rgba(37,99,235,.2); color: var(--accent); }
+code {
+  background: #0f172a; padding: .15rem .35rem; border-radius: 4px;
+  color: #fda4af; font-family: Consolas, monospace;
+}
+pre {
+  background: #0f172a; padding: 1rem; border-radius: 6px; overflow-x: auto;
+  border: 1px solid var(--border); color: #e2e8f0; line-height: 1.5;
+}
+.badge {
+  display: inline-block; padding: .15rem .5rem; border-radius: 4px;
+  font-size: .78rem; font-weight: 700; white-space: nowrap;
+}
+.core { background: #065f46; color: #d1fae5; }
+.consider { background: #78350f; color: #fef3c7; }
+.note {
+  border-left: 3px solid var(--accent); padding: .7rem 1rem;
+  background: rgba(56,189,248,.08); border-radius: 0 6px 6px 0; margin: 1rem 0;
+}
+.flow { display: flex; flex-direction: column; align-items: stretch; gap: .35rem; margin: 1rem 0; }
+.flow-step {
+  background: #0f172a; border: 1px solid var(--border); border-radius: 8px;
+  padding: .8rem 1rem; text-align: center;
+}
+.arrow { color: var(--accent); text-align: center; font-size: 1.25rem; line-height: 1.2; }
+.flow-split { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .75rem; }
+.flow-split .flow-step { height: 100%; }
+.small { color: var(--text-sub); font-size: .9rem; }
+footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding: 1rem 0 2rem; }
+@media (max-width: 700px) {
+  body { padding: 1rem; }
+  section { padding: 1rem; }
+  header { flex-direction: column; }
+  .flow-split { grid-template-columns: 1fr; }
+  table { display: block; overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <div>
+    <h1>デジタル図鑑アプリ 仕様書</h1>
+    <div class="meta-info">
+      <span>アプリ形態：デスクトップアプリ（案）</span>
+      <span>対象OS：Windows 10 / 11（案）</span>
+    </div>
+  </div>
+</header>
+
+<section id="overview">
+  <h2>1. アプリ概要・目的</h2>
+  <p>利用者が知識や情報を自由に登録し、自分だけの図鑑として整理・閲覧できるアプリケーション。名前や説明などの基本情報に加え、登録する対象に合わせて複数のタグを付けられる。</p>
+  <p>また、他のユーザーが公開した情報を検索・閲覧・取り込みできるほか、複数のユーザーが登録した同じ対象の情報を関連付け、それぞれの説明や画像を保持したまままとめて扱えることを特徴とする。</p>
+  <div class="note"><strong>主な特徴：</strong>知識や情報をタグで分類・検索できること。ユーザー間でのデータ共有や、同じ対象に対する複数の情報の関連付けも、アプリの差別化につながる機能として実装を検討する。登録した情報は、別担当が作成する問題作成機能にも活用を検討。</div>
+</section>
+
+<section id="features">
+  <h2>2. 機能一覧</h2>
+
+  <h3>2.1 図鑑データの管理</h3>
+  <table>
+    <thead><tr><th style="width:27%">機能名</th><th>機能概要</th></tr></thead>
+    <tbody>
+      <tr><td><strong>データの登録</strong></td><td>名前、説明、画像、タグなどを入力し、知識や情報を登録する。<br><span class="small">例：名前「IPアドレス」／説明「インターネット上の住所のようなもの」／タグ「ネットワーク」「応用情報技術者試験」</span></td></tr>
+      <tr><td><strong>データの閲覧</strong></td><td>登録した情報を一覧画面や詳細画面で閲覧できる。</td></tr>
+      <tr><td><strong>データの編集・削除</strong></td><td>登録済みの情報を編集、削除できる。</td></tr>
+      <tr><td><strong>図鑑データの検索</strong></td><td>名前、説明、タグなどを利用して目的の情報を検索できる。検索履歴やよく検索される語句の表示は追加候補とする。(検索機能がある場合、他の機能と揃える)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>2.2 データ共有・関連付け機能</h3>
+  <table>
+    <thead><tr><th style="width:27%">機能名</th><th>機能概要</th></tr></thead>
+    <tbody>
+      <tr><td><strong>公開データの検索・閲覧</strong></td><td>他のユーザーが公開した情報を検索し、内容を閲覧できる。</td></tr>
+      <tr><td><strong>公開データの取り込み</strong></td><td>他のユーザーが公開した情報を、自分の図鑑に取り込んで利用できる。</td></tr>
+      <tr><td><strong>同じ対象の情報の関連付け</strong></td><td>複数のユーザーが登録した同じ対象についての情報を関連付け、元の情報を保持したまままとめて扱える。</td></tr>
+    </tbody>
+  </table>
+
+  <h3>2.2.1 同じ対象の情報の関連付け（詳細案）</h3>
+  <p>複数のユーザーが同じ対象について、それぞれの理解や表現で登録した情報を関連付け、まとめて参照できるようにする。各ユーザーが登録した説明や画像などは、元の登録者と内容を区別できる形で保持する。</p>
+  <p>この機能の目的は、同じ用語に対するさまざまな説明を問題作成に活用することで、学習者が特定の表現を暗記するだけでなく、意味を理解したうえで答えられるようにすることである。</p>
+  <p>例えば、「IPアドレス」について、次のような情報を関連付ける。</p>
+  <table>
+    <thead><tr><th>登録者</th><th>対象名</th><th>説明の例</th></tr></thead>
+    <tbody>
+      <tr><td>自分</td><td>IPアドレス</td><td>インターネット上の住所のようなもの</td></tr>
+      <tr><td>Aさん</td><td>IPアドレス</td><td>ネットに接続する機器に割り当てられる番号</td></tr>
+      <tr><td>Bさん</td><td>IPアドレス</td><td>ネットワーク上で機器などを識別するためのアドレス</td></tr>
+    </tbody>
+  </table>
+  <p>これらの説明を問題作成に活用することで、同じIPアドレスについて異なる表現の問題や選択肢を作成できる。これにより、学習者が特定の文章だけを覚えて正解するのではなく、表現が変わっても意味を理解して答えられるようにすることを目指す。</p>
+  <div class="note"><strong>検討事項：</strong>異なる表現で登録された情報をどのように関連付け、問題作成機能で活用するかは、今後検討する。</div>
+
+  <h3>2.3 他機能との連携</h3>
+  <table>
+    <thead><tr><th style="width:27%">連携先</th><th>連携内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>問題作成機能</strong></td><td>図鑑に登録した情報や、関連付けた複数のユーザーの情報を問題作成に活用する。問題の作成方法や出題形式の詳細は、問題作成機能の仕様に従う。</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="flow">
+  <h2>3. 利用の流れ</h2>
+  <div class="flow">
+    <div class="flow-step"><strong>1. 図鑑データを登録</strong><br><span class="small">名前・説明・画像・タグなどを登録する</span></div>
+    <div class="arrow">↓</div>
+    <div class="flow-step"><strong>2. 図鑑データを閲覧・管理</strong><br><span class="small">一覧・詳細画面で確認し、検索・編集・削除を行う</span></div>
+    <div class="arrow">↓</div>
+    <div class="flow-split">
+      <div class="flow-step"><strong>3-A. 自分の情報を公開</strong><br><span class="small">他のユーザーが検索・閲覧できるようにする</span></div>
+      <div class="flow-step"><strong>3-B. 公開情報を利用</strong><br><span class="small">他のユーザーが公開した情報を検索・閲覧し、必要に応じて自分の図鑑に取り込む</span></div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="flow-step"><strong>4. 同じ対象の情報を関連付ける（追加候補）</strong><br><span class="small">複数のユーザーが登録した同じ対象の情報を関連付け、それぞれの説明や画像を保持したまままとめて参照できるようにする。</span></div>
+    <div class="arrow">↓</div>
+    <div class="flow-step"><strong>5. 問題作成機能で活用</strong><br><span class="small">登録した情報や、関連付けた複数の説明を問題作成機能に渡し、問題の作成に活用する。</span></div>
+  </div>
+  <p class="small">※共有・関連付けは実装を検討している機能であり、上記は想定する利用の流れ。具体的な操作手順は、機能の採用と画面設計に合わせて調整する。</p>
+</section>
+
+<section id="screens">
+  <h2>4. 画面レイアウト構成案・画面遷移</h2>
+  <h3>4.1 想定する画面</h3>
+  <table>
+    <thead><tr><th style="width:27%">画面名</th><th>主な内容・操作</th></tr></thead>
+    <tbody>
+      <tr><td>ホーム／図鑑一覧</td><td>自分の登録データの一覧、検索欄、新規登録への導線を表示する。</td></tr>
+      <tr><td>データ登録・編集</td><td>名前、説明、画像、タグなどを入力・編集する。</td></tr>
+      <tr><td>データ詳細</td><td>登録情報の詳細を表示し、編集・削除・公開などの操作につなぐ。</td></tr>
+      <tr><td>公開データ検索</td><td>他のユーザーが公開した情報を検索・閲覧し、自分の図鑑への取り込みを行う。</td></tr>
+      <tr><td>関連付け管理</td><td>同じ対象に関する情報を確認し、関連付け・関連付け解除を行う案。</td></tr>
+    </tbody>
+  </table>
+  <h3>4.2 画面遷移の案</h3>
+  <div class="flow">
+    <div class="flow-step">ホーム／図鑑一覧</div>
+    <div class="arrow">↓</div>
+    <div class="flow-split">
+      <div class="flow-step">データ登録・編集</div>
+      <div class="flow-step">データ詳細</div>
+      <div class="flow-step">図鑑データ検索</div>
+      <div class="flow-step">公開データ検索</div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="flow-split">
+      <div class="flow-step">関連付け管理</div>
+      <div class="flow-step">公開データの取り込み</div>
+    </div>
+    <div class="arrow">↓</div>
+    <div class="flow-step">問題作成機能との連携</div>
+  </div>
+  <p class="small">※画面遷移は概略。画面モックアップや実際の操作に合わせて見直す。</p>
+</section>
+
+<section id="scope">
+  <h2>5. 開発方針・追加機能の検討</h2>
+  <h3>5.1 基本機能と開発の優先順位</h3>
+  <ul>
+    <li>図鑑データの登録・閲覧・編集・削除</li>
+    <li>タグの設定・管理</li>
+    <li>図鑑データの検索</li>
+    <li>問題作成機能とのデータ連携</li>
+  </ul>
+  <p>まずは、図鑑データの登録・閲覧・編集・削除・検索など、基本機能を完成させることを優先する。データ共有や同じ対象の情報の関連付けは、既存の図鑑・単語帳との差別化につながる一方、実装範囲が広がる可能性があるため、基本機能の進捗や開発期間を踏まえて実装するか検討する。採用する場合も、実現可能な範囲から段階的に追加する。</p>
+
+  <h3>5.2 追加を検討する機能</h3>
+  <table>
+    <thead><tr><th style="width:34%">機能</th><th>扱い</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td>データ共有</td><td><span class="badge consider">実装検討</span></td><td>他のユーザーが公開した情報を検索・閲覧し、自分の図鑑に取り込めるようにする。既存の図鑑・単語帳との差別化につながる。</td></tr>
+      <tr><td>同じ対象の情報の関連付け</td><td><span class="badge consider">実装検討</span></td><td>複数のユーザーが登録した同じ対象の情報を、元の説明などを保持したまままとめて参照できるようにする。共有と組み合わせることで差別化につながる。</td></tr>
+      <tr><td>検索履歴の表示</td><td><span class="badge consider">追加候補</span></td><td>過去に検索した語句を検索欄の下などに表示する。</td></tr>
+      <tr><td>よく検索される語句の表示</td><td><span class="badge consider">追加候補</span></td><td>利用者間でよく検索される語句を表示する。利用状況を集計する仕組みが必要になる。</td></tr>
+      <tr><td>高度な関連付け支援</td><td><span class="badge consider">追加候補</span></td><td>名前やタグなどを手掛かりに、関連付け候補を提示する。ユーザーが情報を登録した際に同じ対象の情報として関連付けられそうな候補を自動的に提示する</td></tr>
+      <tr><td>共有データの管理機能</td><td><span class="badge consider">追加候補</span></td><td>公開状態の変更、取り込み元の確認、関連付け解除などを整備する。</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><strong>開発方針：</strong>基本機能の完成を優先し、開発期間やチームの進捗を見ながら追加機能を検討する。共有・関連付けは差別化につながるため、実装の負担と効果を踏まえて採否を判断する。(追加候補は本当に候補)</div>
+</section>
+
+<footer>デジタル図鑑アプリ 仕様書（作成中・機能や技術は今後変更する場合があります）</footer>
+</div>
+</body>
+</html>
