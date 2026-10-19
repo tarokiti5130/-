@@ -98,6 +98,100 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   .flow-split { grid-template-columns: 1fr; }
   table { display: block; overflow-x: auto; }
 }
+</style><style>
+:root {
+  --primary: #2563eb;
+  --bg-dark: #0f172a;
+  --card-bg: #1e293b;
+  --text-main: #f8fafc;
+  --text-sub: #94a3b8;
+  --accent: #38bdf8;
+  --border: #334155;
+  --green: #34d399;
+  --amber: #fbbf24;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", Meiryo, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  margin: 0;
+  padding: 2rem;
+  line-height: 1.75;
+}
+.container { max-width: 1080px; margin: 0 auto; }
+header {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+h1 { color: var(--accent); font-size: 1.9rem; margin: 0 0 .5rem; line-height: 1.4; }
+.meta-info { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; color: var(--text-sub); font-size: .9rem; }
+.nav-group { display: flex; flex-wrap: wrap; gap: .5rem; }
+.btn {
+  display: inline-block; color: white; background: var(--primary);
+  text-decoration: none; padding: .5rem .85rem; border-radius: 6px;
+  font-weight: 600; font-size: .85rem; border: 1px solid rgba(255,255,255,.1);
+}
+.btn:hover { background: #1d4ed8; }
+section {
+  background: var(--card-bg); border-radius: 8px; padding: 1.5rem;
+  margin-bottom: 1.5rem; border: 1px solid var(--border);
+  scroll-margin-top: 1rem;
+}
+h2 {
+  color: var(--accent); font-size: 1.35rem; border-bottom: 1px solid var(--border);
+  padding-bottom: .5rem; margin: 0 0 1rem;
+}
+h3 { color: #7dd3fc; font-size: 1.08rem; margin: 1.4rem 0 .5rem; }
+h4 { color: var(--text-main); margin: 1rem 0 .3rem; }
+p { margin: .5rem 0 .8rem; }
+ul, ol { padding-left: 1.4rem; }
+li { margin-bottom: .35rem; }
+table { width: 100%; border-collapse: collapse; margin: .8rem 0 1rem; }
+th, td { border: 1px solid var(--border); padding: .75rem; text-align: left; vertical-align: top; }
+th { background: rgba(37,99,235,.2); color: var(--accent); }
+code {
+  background: #0f172a; padding: .15rem .35rem; border-radius: 4px;
+  color: #fda4af; font-family: Consolas, monospace;
+}
+pre {
+  background: #0f172a; padding: 1rem; border-radius: 6px; overflow-x: auto;
+  border: 1px solid var(--border); color: #e2e8f0; line-height: 1.5;
+}
+.badge {
+  display: inline-block; padding: .15rem .5rem; border-radius: 4px;
+  font-size: .78rem; font-weight: 700; white-space: nowrap;
+}
+.core { background: #065f46; color: #d1fae5; }
+.consider { background: #78350f; color: #fef3c7; }
+.note {
+  border-left: 3px solid var(--accent); padding: .7rem 1rem;
+  background: rgba(56,189,248,.08); border-radius: 0 6px 6px 0; margin: 1rem 0;
+}
+.flow { display: flex; flex-direction: column; align-items: stretch; gap: .35rem; margin: 1rem 0; }
+.flow-step {
+  background: #0f172a; border: 1px solid var(--border); border-radius: 8px;
+  padding: .8rem 1rem; text-align: center;
+}
+.arrow { color: var(--accent); text-align: center; font-size: 1.25rem; line-height: 1.2; }
+.flow-split { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .75rem; }
+.flow-split .flow-step { height: 100%; }
+.small { color: var(--text-sub); font-size: .9rem; }
+footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding: 1rem 0 2rem; }
+@media (max-width: 700px) {
+  body { padding: 1rem; }
+  section { padding: 1rem; }
+  header { flex-direction: column; }
+  .flow-split { grid-template-columns: 1fr; }
+  table { display: block; overflow-x: auto; }
+}
 </style>
 </head>
 <body>
@@ -172,8 +266,18 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   </table>
 </section>
 
+<section id="non-functional">
+
+  <h3>3 データ管理・保存方針</h3>
+  <ul>
+    <li><strong>基本動作（ローカル）：</strong>データをユーザーのローカル環境（MySQL）に保存し、スタンドアロンで動作させる。</li>
+    <li><strong>共有・連携機能（将来拡張）：</strong>データ共有機能や関連付け機能を実装・使用する場合に限り、サーバーを介したデータ授受を行う構成を検討する。</li>
+  </ul>
+
+</section>
+
 <section id="flow">
-  <h2>3. 利用の流れ</h2>
+  <h2>4. 利用の流れ</h2>
   <div class="flow">
     <div class="flow-step"><strong>1. 図鑑データを登録</strong><br><span class="small">名前・説明・タグなどを登録する</span></div>
     <div class="arrow">↓</div>
@@ -192,8 +296,8 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
 </section>
 
 <section id="screens">
-  <h2>4. 画面レイアウト構成案・画面遷移</h2>
-  <h3>4.1 想定する画面</h3>
+  <h2>5. 画面レイアウト構成案・画面遷移</h2>
+  <h3>5.1 想定する画面</h3>
   <table>
     <thead><tr><th style="width:27%">画面名</th><th>主な内容・操作</th></tr></thead>
     <tbody>
@@ -204,7 +308,7 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
       <tr><td>関連付け管理</td><td>同じ対象に関する情報を確認し、関連付け・関連付け解除を行う案。</td></tr>
     </tbody>
   </table>
-  <h3>4.2 画面遷移の案</h3>
+  <h3>5.2 画面遷移の案</h3>
   <div class="flow">
     <div class="flow-step">ホーム／図鑑一覧</div>
     <div class="arrow">↓</div>
@@ -226,8 +330,8 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
 </section>
 
 <section id="scope">
-  <h2>5. 開発方針・追加機能の検討</h2>
-  <h3>5.1 基本機能と開発の優先順位</h3>
+  <h2>6. 開発方針・追加機能の検討</h2>
+  <h3>6.1 基本機能と開発の優先順位</h3>
   <ul>
     <li>図鑑データの登録・閲覧・編集・削除</li>
     <li>タグの設定・管理</li>
@@ -236,7 +340,7 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   </ul>
   <p>まずは、図鑑データの登録・閲覧・編集・削除・検索など、基本機能を完成させることを優先する。データ共有や同じ対象の情報の関連付けは、既存の図鑑・単語帳との差別化につながる一方、実装範囲が広がる可能性があるため、基本機能の進捗や開発期間を踏まえて実装するか検討する。採用する場合も、実現可能な範囲から段階的に追加する。</p>
 
-  <h3>5.2 追加を検討する機能</h3>
+  <h3>6.2 追加を検討する機能</h3>
   <table>
     <thead><tr><th style="width:34%">機能</th><th>扱い</th><th>内容</th></tr></thead>
     <tbody>
