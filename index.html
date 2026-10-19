@@ -106,6 +106,10 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   <div>
     <h1>デジタル図鑑アプリ 仕様書</h1>
     <div class="meta-info">
+      <span>アーキテクチャ：Tauri v2</span>
+      <span>画面：HTML/CSS/JavaScript</span>
+      <span>バックエンド：Rust</span>
+      <span>使用DB：MySQL(仮)</span>
       <span>アプリ形態：デスクトップアプリ（案）</span>
       <span>対象OS：Windows 10 / 11（案）</span>
     </div>
@@ -241,7 +245,8 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
       <tr><td>検索履歴の表示</td><td><span class="badge consider">追加候補</span></td><td>過去に検索した語句を検索欄の下などに表示する。</td></tr>
       <tr><td>よく検索される語句の表示</td><td><span class="badge consider">追加候補</span></td><td>利用者間でよく検索される語句を表示する。利用状況を集計する仕組みが必要になる。</td></tr>
       <tr><td>高度な関連付け支援</td><td><span class="badge consider">追加候補</span></td><td>名前やタグなどを手掛かりに、関連付け候補を提示する。ユーザーが情報を登録した際に同じ対象の情報として関連付けられそうな候補を自動的に提示する</td></tr>
-      <tr><td>共有データの管理機能</td><td><span class="badge consider">追加候補</span></td><td>公開状態の変更、取り込み元の確認、関連付け解除などを整備する。</td></tr>
+      <tr><td>共有データの管理機能</td><td><span class="badge consider">追加候補</span></td><td>公開状態の変更、取り込み、関連付け解除などを整備する。</td></tr>
+      <tr><td>共有データの誤り報告機能</td><td><span class="badge consider">追加候補</span></td><td>公開されている情報が誤っている場合報告できるようにする。管理者に通知されるか、共有元に直接通知されるかなど詳細は検討する。</td></tr>
     </tbody>
   </table>
   <div class="note"><strong>開発方針：</strong>基本機能の完成を優先し、開発期間やチームの進捗を見ながら追加機能を検討する。共有・関連付けは差別化につながるため、実装の負担と効果を踏まえて採否を判断する。(※追加候補はあくまでアイデア段階)</div>
