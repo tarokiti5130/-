@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <title>デジタル図鑑アプリ 仕様書(仮)</title>
 <style>
 :root {
@@ -98,8 +99,9 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   .flow-split { grid-template-columns: 1fr; }
   table { display: block; overflow-x: auto; }
 }
-.diagram { background: #fff; padding: 1rem; border-radius: 8px; text-align: center; margin: 1rem 0; }
-.diagram img { max-width: 100%; height: auto; }
+.diagram{text-align:center;overflow-x:auto}
+.diagram pre.mermaid{background:transparent;border:none;padding:0;display:inline-block;max-width:100%}
+.diagram svg{height:auto;max-width:100%}
 </style>
 </head>
 <body>
@@ -219,7 +221,30 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   </table>
   <h3>5.2 画面遷移の案</h3>
   <div class="diagram">
-    <img src="images/screen-transition-TD.svg" alt="画面遷移図">
+  <pre class="mermaid">
+  flowchart TD
+      H["図鑑一覧・検索結果（ホーム）<br>一覧・検索欄"]
+      T["タグ一覧<br>編集・削除"]
+      D["データ詳細<br>登録内容を表示"]
+      E["データ登録・編集"]
+      X["削除確認"]
+  
+      H -->|検索| H
+      H -->|新規登録| E
+      E -->|保存 / キャンセル| H
+      H -->|タグ管理| T
+      T -->|戻る| H
+      H -->|選択| D
+      D -->|編集| E
+      D -->|削除| X
+      X -->|キャンセル| D
+      X -->|削除完了| H
+  
+      classDef screen fill:#1e3a5f,stroke:#38bdf8,color:#f8fafc
+      classDef confirm fill:#78350f,stroke:#fbbf24,color:#fef3c7
+      class H,T,D,E screen
+      class X confirm
+  </pre>
   </div>
   <p class="small">※画面遷移は概略。画面モックアップや実際の操作に合わせて見直す。共有・関連付けは将来拡張のため、この図には含めない</p>
 </section>
@@ -253,5 +278,8 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
 
 <footer>デジタル図鑑アプリ 仕様書（作成中・機能や技術は今後変更する場合があります）</footer>
 </div>
+<script>
+mermaid.initialize({startOnLoad:true,theme:'dark',securityLevel:'loose',flowchart:{htmlLabels:true,useMaxWidth:true,curve:'basis',nodeSpacing:40,rankSpacing:50}});
+</script>
 </body>
 </html>
