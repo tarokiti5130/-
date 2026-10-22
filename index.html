@@ -137,7 +137,7 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
       <tr><td><strong>データの閲覧</strong></td><td>登録した情報を一覧画面や詳細画面で閲覧できる。</td></tr>
       <tr><td><strong>データの編集・削除</strong></td><td>登録済みの情報(名前、説明、タグの付け外し)を編集、削除できる。</td></tr>
       <tr><td><strong>タグの編集・削除</strong></td><td>タグ一覧画面で、登録済みのタグ名を変更、削除できる。削除したタグが付いていたデータはタグだけ外れてデータは残すものとする。</td></tr>
-      <tr><td><strong>図鑑データの検索</strong></td><td>名前、説明、タグなどを利用して目的の情報を検索できる。検索欄はホーム画面に置き、同じ一覧内で絞り込む検索履歴やよく検索される語句の表示は追加候補とする。(検索機能がある場合、他の機能と揃える)</td></tr>
+      <tr><td><strong>図鑑データの検索</strong></td><td>名前、説明、タグなどを利用して目的の情報を検索できる。検索欄はホーム画面に置き、同じ一覧内で絞り込む。検索履歴やよく検索される語句の表示は追加候補とする。(検索機能がある場合、他の機能と揃える)</td></tr>
     </tbody>
   </table>
 
@@ -147,7 +147,7 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
     <tbody>
       <tr><td><strong>公開データの検索・閲覧</strong></td><td>他のユーザーが公開した情報を検索し、内容を閲覧できる。</td></tr>
       <tr><td><strong>公開データの取り込み</strong></td><td>他のユーザーが公開した情報を、自分の図鑑に取り込んで利用できる。</td></tr>
-      <tr><td><strong>同じ対象の情報の関連付け</strong></td><td>複数のユーザーが登録した同じ対象についての情報を関連付け、元の情報を保持したまままとめて扱える。</td></tr>
+      <tr><td><strong>同じ対象の情報の関連付け</strong></td><td>複数のユーザーが登録した同じ対象についての情報を、同じ対象の項目に説明の一つとして追加する</td></tr>
     </tbody>
   </table>
 
@@ -158,9 +158,9 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   <table>
     <thead><tr><th>対象名</th><th>説明の例</th></tr></thead>
     <tbody>
-      <tr><td>IPアドレス(自作)</td><td>インターネット上の住所のようなもの</td></tr>
-      <tr><td>IPアドレス(Aさん作)</td><td>ネットに接続する機器に割り当てられる番号</td></tr>
-      <tr><td>IPアドレス(Bさん作)</td><td>ネットワーク上で機器などを識別するためのアドレス</td></tr>
+      <tr><td>IPアドレス</td><td>インターネット上の住所のようなもの</td></tr>
+      <tr><td>IPアドレス</td><td>ネットに接続する機器に割り当てられる番号</td></tr>
+      <tr><td>IPアドレス</td><td>ネットワーク上で機器などを識別するためのアドレス</td></tr>
     </tbody>
   </table>
   <p>これらの説明を問題作成に活用することで、同じIPアドレスについて異なる表現の問題や選択肢を作成できる。これにより、学習者が特定の文章だけを覚えて正解するのではなく、表現が変わっても意味を理解して答えられるようにすることを目指す。</p>
@@ -170,13 +170,13 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   <table>
     <thead><tr><th style="width:27%">連携先</th><th>連携内容</th></tr></thead>
     <tbody>
-      <tr><td><strong>問題作成機能</strong></td><td>図鑑に登録した情報や、関連付けた複数のユーザーの情報を問題作成に活用する。問題の作成方法や出題形式の詳細は、問題作成機能の仕様に従う。</td></tr>
+      <tr><td><strong>問題作成機能</strong></td><td>1つの項目に登録された複数の説明を問題作成に活用する。問題の作成方法や出題形式の詳細は、問題作成機能の仕様に従う。</td></tr>
     </tbody>
   </table>
 </section>
 
 <section id="non-functional">
-  <h2>3 データ管理・保存方針</h2>
+  <h2>3. データ管理・保存方針</h2>
   <ul>
     <li><strong>基本動作（ローカル）：</strong>データをユーザーのローカル環境（MySQL）に保存し、スタンドアロンで動作させる。</li>
     <li><strong>共有・連携機能（将来拡張）：</strong>データ共有機能や関連付け機能を実装・使用する場合に限り、サーバーを介したデータ授受を行う構成を検討する。</li>
@@ -208,8 +208,8 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   <table>
     <thead><tr><th style="width:27%">画面名</th><th>主な内容・操作</th></tr></thead>
     <tbody>
-      <tr><td>ホーム／図鑑一覧</td><td>自分の登録データの一覧、検索欄、新規登録への導線を表示する。検索欄は一覧に置く。</td></tr>
-      <tr><td>データ登録・編集</td><td>名前、説明、タグなどを入力・編集する。</td></tr>
+      <tr><td>ホーム／図鑑一覧</td><td>新規登録・タグ管理への導線を表示する。検索結果も同じ一覧に表示する。</td></tr>
+      <tr><td>データ登録・編集</td><td>名前、説明、タグなどを入力・編集する。説明は複数追加・削除できるタグは入力時に新規作成できる</td></tr>
       <tr><td>データ詳細</td><td>登録情報の詳細を表示し、編集・削除・公開などの操作につなぐ。複数の説明を並べて表示する。</td></tr>
       <tr><td>タグ一覧</td><td>タグ名の確認・その場でタグ名の編集・削除を行う。</td></tr>
       <tr><td>削除確認(ダイアログ未定)</td><td>データ詳細、タグ一覧から削除を行う場合表示する</td></tr>
