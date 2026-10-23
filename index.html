@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<title>デジタル図鑑アプリ 仕様書(仮)</title>
+<title>デジタル図鑑アプリ 仕様書・要件定義書(仮)</title>
 <style>
 :root {
   --primary: #2563eb;
@@ -78,6 +77,7 @@ pre {
 }
 .core { background: #065f46; color: #d1fae5; }
 .consider { background: #78350f; color: #fef3c7; }
+.idea { background: #334155; color: #e2e8f0; }
 .note {
   border-left: 3px solid var(--accent); padding: .7rem 1rem;
   background: rgba(56,189,248,.08); border-radius: 0 6px 6px 0; margin: 1rem 0;
@@ -99,57 +99,72 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   .flow-split { grid-template-columns: 1fr; }
   table { display: block; overflow-x: auto; }
 }
-.diagram{text-align:center;overflow-x:auto}
-.diagram pre.mermaid{background:transparent;border:none;padding:0;display:inline-block;max-width:100%}
-.diagram svg{height:auto;max-width:100%}
+.diagram { background: #0f172a; padding: 1rem; border-radius: 8px; text-align: center; margin: 1rem 0; }
+.diagram img { max-width: 100%; height: auto; }
 </style>
 </head>
 <body>
 <div class="container">
 <header>
   <div>
-    <h1>デジタル図鑑アプリ 仕様書</h1>
+    <h1>デジタル図鑑アプリ 仕様書・要件定義書</h1>
     <div class="meta-info">
       <span>アーキテクチャ：Tauri v2</span>
       <span>画面：HTML/CSS/JavaScript</span>
       <span>バックエンド：Rust</span>
       <span>使用DB：MySQL(仮)</span>
-      <span>アプリ形態：デスクトップアプリ（案）</span>
-      <span>対象OS：Windows 10 / 11（案）</span>
+      <span>アプリ形態：デスクトップアプリ</span>
+      <span>対象OS：Windows 10 / 11</span>
+    </div>
+    <div class="meta-info" style="margin-top:.5rem">
+      <span>最終更新：2026年10月23日</span>
+      <span>関連ドキュメント：画面定義書・テーブル定義書（作成予定。完成後にリンクを追加）</span>
     </div>
   </div>
 </header>
 
 <section id="overview">
-  <h2>1. アプリ概要・目的</h2>
-  <p>主な利用対象者はITに関わるすべての人（プログラミングやIT技術を学ぶ初学者、資格勉強をする社会人など）とし、自律的な知識の整理・定着をサポートする。</p>
-  <p>利用者が知識や情報を自由に登録し、自分だけの図鑑として整理・閲覧できるアプリケーション。名前や説明などの基本情報に加え、登録する対象に合わせて複数のタグを付けられる。</p>
-  <p>また、他のユーザーが公開した情報を検索・閲覧・取り込みできるほか、複数のユーザーが登録した同じ対象の情報を関連付け、それぞれの説明など保持したまままとめて扱えることを特徴とする。</p>
-  <div class="note"><strong>主な特徴：</strong>知識や情報をタグで分類・検索できること。ユーザー間でのデータ共有や、同じ対象に対する複数の情報の関連付けも、アプリの差別化につながる機能として実装を検討する。登録した情報は、別担当が作成する問題作成機能にも活用を検討。</div>
+  <h2>1. 背景・目的・利用者</h2>
+
+  <h3>1.1 背景</h3>
+  <p>ITの学習では覚える用語や概念が多く、学んだ知識を自分なりに整理し、定着させることが難しい。既存の図鑑・単語帳アプリは用意された内容を見るものが多く、自分の理解した言葉で知識をためていく用途には十分でない。</p>
+
+  <h3>1.2 目的</h3>
+  <p>利用者が知識や情報を自由に登録し、自分だけの図鑑として整理・閲覧できるようにすることで、知識の整理・定着をサポートする。名前や説明などの基本情報に加え、登録する対象に合わせて複数のタグを付けられる。</p>
+  <p>また、他のユーザーが公開した情報を検索・閲覧・取り込みできるほか、取り込んだ情報を同じ対象の項目に説明の一つとして追加し、まとめて扱えることを特徴とする。</p>
+  <div class="note"><strong>主な特徴：</strong>知識や情報をタグで分類・検索できること。ユーザー間でのデータ共有や、同じ対象に対する複数の情報の関連付けも、アプリの差別化につながる機能として実装を検討する。</div>
+
+  <h3>1.3 想定利用者</h3>
+  <p>ITに関わるすべての人。主な例として、プログラミングやIT技術を学ぶ初学者、資格勉強をする社会人を想定する。</p>
+
+  <h3>1.4 位置づけ</h3>
+  <p>本アプリの図鑑機能は、IT学習アプリの一部である。同じアプリには問題作成やニュース収集などの機能があり、別担当が作成する。登録した情報は、問題作成機能にも活用する。継続的に使う機能として位置づけ、試験的な機能ではない。</p>
+
 </section>
 
 <section id="features">
   <h2>2. 機能一覧</h2>
+  <p class="small">区分の見方：<span class="badge core">初期版</span> まず完成させる機能　<span class="badge consider">実装検討</span> 進捗や開発期間を見て採否を判断する機能　<span class="badge idea">追加候補</span> アイデア段階の機能（6.2参照）</p>
 
   <h3>2.1 図鑑データの管理</h3>
   <table>
-    <thead><tr><th style="width:27%">機能名</th><th>機能概要</th></tr></thead>
+    <thead><tr><th style="width:27%">機能名</th><th style="width:11%">区分</th><th>機能概要</th></tr></thead>
     <tbody>
-      <tr><td><strong>データの登録</strong></td><td>名前、説明、タグなどを入力し、知識や情報を登録する。説明は1つの項目に複数登録できる。<br><span class="small">例：名前「IPアドレス」／説明「インターネット上の住所のようなもの」／タグ「ネットワーク」「応用情報技術者試験」</span></td></tr>
-      <tr><td><strong>データの閲覧</strong></td><td>登録した情報を一覧画面や詳細画面で閲覧できる。</td></tr>
-      <tr><td><strong>データの編集・削除</strong></td><td>登録済みの情報(名前、説明、タグの付け外し)を編集、削除できる。</td></tr>
-      <tr><td><strong>タグの編集・削除</strong></td><td>タグ一覧画面で、登録済みのタグ名を変更、削除できる。削除したタグが付いていたデータはタグだけ外れてデータは残すものとする。</td></tr>
-      <tr><td><strong>図鑑データの検索</strong></td><td>名前、説明、タグなどを利用して目的の情報を検索できる。検索欄はホーム画面に置き、同じ一覧内で絞り込む検索履歴やよく検索される語句の表示は追加候補とする。(検索機能がある場合、他の機能と揃える)</td></tr>
+      <tr><td><strong>データの登録</strong></td><td><span class="badge core">初期版</span></td><td>名前、説明、タグなどを入力し、知識や情報を登録する。説明は1つの項目に複数登録できる。<br><span class="small">例：名前「IPアドレス」／説明「インターネット上の住所のようなもの」／タグ「ネットワーク」「応用情報技術者試験」</span></td></tr>
+      <tr><td><strong>データの閲覧</strong></td><td><span class="badge core">初期版</span></td><td>登録した情報を一覧画面や詳細画面で閲覧できる。</td></tr>
+      <tr><td><strong>データの編集・削除</strong></td><td><span class="badge core">初期版</span></td><td>登録済みの情報(名前、説明、タグの付け外し)を編集、削除できる。</td></tr>
+      <tr><td><strong>タグの編集・削除</strong></td><td><span class="badge core">初期版</span></td><td>タグ一覧画面で、登録済みのタグ名を変更、削除できる。削除したタグが付いていたデータはタグだけ外れてデータは残すものとする。</td></tr>
+      <tr><td><strong>図鑑データの検索</strong></td><td><span class="badge core">初期版</span></td><td>名前、説明、タグなどを利用して目的の情報を検索できる。検索欄はホーム画面に置き、同じ一覧内で絞り込む。検索履歴やよく検索される語句の表示は追加候補とする。(検索機能がある場合、他の機能と揃える)</td></tr>
     </tbody>
   </table>
 
   <h3>2.2 データ共有・関連付け機能</h3>
   <table>
-    <thead><tr><th style="width:27%">機能名</th><th>機能概要</th></tr></thead>
+    <thead><tr><th style="width:27%">機能名</th><th style="width:11%">区分</th><th>機能概要</th></tr></thead>
     <tbody>
-      <tr><td><strong>公開データの検索・閲覧</strong></td><td>他のユーザーが公開した情報を検索し、内容を閲覧できる。</td></tr>
-      <tr><td><strong>公開データの取り込み</strong></td><td>他のユーザーが公開した情報を、自分の図鑑に取り込んで利用できる。</td></tr>
-      <tr><td><strong>同じ対象の情報の関連付け</strong></td><td>複数のユーザーが登録した同じ対象についての情報を関連付け、元の情報を保持したまままとめて扱える。</td></tr>
+      <tr><td><strong>公開データの検索・閲覧</strong></td><td><span class="badge consider">実装検討</span></td><td>他のユーザーが公開した情報を検索し、内容を閲覧できる。</td></tr>
+      <tr><td><strong>公開データの取り込み</strong></td><td><span class="badge consider">実装検討</span></td><td>他のユーザーが公開した情報を、自分の図鑑に取り込んで利用できる。</td></tr>
+      <tr><td><strong>同じ対象の情報の関連付け</strong></td><td><span class="badge consider">実装検討</span></td><td>複数のユーザーが登録した同じ対象についての情報を、同じ対象の項目に説明の一つとして追加する。</td></tr>
     </tbody>
   </table>
 
@@ -160,29 +175,57 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   <table>
     <thead><tr><th>対象名</th><th>説明の例</th></tr></thead>
     <tbody>
-      <tr><td>IPアドレス(自作)</td><td>インターネット上の住所のようなもの</td></tr>
-      <tr><td>IPアドレス(Aさん作)</td><td>ネットに接続する機器に割り当てられる番号</td></tr>
-      <tr><td>IPアドレス(Bさん作)</td><td>ネットワーク上で機器などを識別するためのアドレス</td></tr>
+      <tr><td>IPアドレス</td><td>インターネット上の住所のようなもの</td></tr>
+      <tr><td>IPアドレス</td><td>ネットに接続する機器に割り当てられる番号</td></tr>
+      <tr><td>IPアドレス</td><td>ネットワーク上で機器などを識別するためのアドレス</td></tr>
     </tbody>
   </table>
   <p>これらの説明を問題作成に活用することで、同じIPアドレスについて異なる表現の問題や選択肢を作成できる。これにより、学習者が特定の文章だけを覚えて正解するのではなく、表現が変わっても意味を理解して答えられるようにすることを目指す。</p>
-  <div class="note"><strong>検討事項：</strong>異なる表現で登録された情報をどのように関連付け、問題作成機能で活用するかは、今後検討する。</div>
+  <div class="note"><strong>検討事項：</strong>異なる表現で登録された情報をどのように関連付け、問題作成機能で活用するかは、今後検討する（7章 未決事項）。</div>
 
   <h3>2.3 他機能との連携</h3>
   <table>
-    <thead><tr><th style="width:27%">連携先</th><th>連携内容</th></tr></thead>
+    <thead><tr><th style="width:27%">連携先</th><th style="width:11%">区分</th><th>連携内容</th></tr></thead>
     <tbody>
-      <tr><td><strong>問題作成機能</strong></td><td>図鑑に登録した情報や、関連付けた複数のユーザーの情報を問題作成に活用する。問題の作成方法や出題形式の詳細は、問題作成機能の仕様に従う。</td></tr>
+      <tr><td><strong>問題作成機能</strong></td><td><span class="badge consider">実装検討</span></td><td>1つの項目に登録された複数の説明を問題作成に活用する。問題の作成方法や出題形式の詳細は、問題作成機能の仕様に従う。</td></tr>
     </tbody>
   </table>
 </section>
 
 <section id="non-functional">
-  <h2>3 データ管理・保存方針</h2>
+  <h2>3. 非機能要件・データ管理方針</h2>
+
+  <h3>3.1 動作環境</h3>
   <ul>
-    <li><strong>基本動作（ローカル）：</strong>データをユーザーのローカル環境（MySQL）に保存し、スタンドアロンで動作させる。</li>
-    <li><strong>共有・連携機能（将来拡張）：</strong>データ共有機能や関連付け機能を実装・使用する場合に限り、サーバーを介したデータ授受を行う構成を検討する。</li>
+    <li>アプリ形態：デスクトップアプリ（Tauri v2）</li>
+    <li>対象OS：Windows 10 / 11</li>
   </ul>
+
+  <h3>3.2 性能（仮の目標値）</h3>
+  <ul>
+    <li>図鑑データの一覧表示・検索は、登録件数1,000件程度で1秒以内に結果を表示する。</li>
+  </ul>
+  <p class="small">※実装・動作確認を進めながら見直す仮の目標値。</p>
+
+  <h3>3.3 データの保存とオフライン動作</h3>
+  <ul>
+    <li><strong>基本動作（ローカル）：</strong>データをユーザーのローカル環境（MySQL(仮)）に保存し、スタンドアロンで動作させる。基本機能（2.1）はネットワークに接続していなくても利用できる。</li>
+    <li><strong>共有・連携機能（実装検討）：</strong>データ共有機能や関連付け機能を実装・使用する場合に限り、サーバーを介したデータ授受を行う構成を検討する。通信が発生するのはこれらの機能を使うときのみとする。</li>
+  </ul>
+  <h3>3.4 データ構成</h3>
+  <p>図鑑で扱うデータの種類と関係は次のとおり。</p>
+  <table>
+    <thead><tr><th style="width:27%">データ</th><th>内容・関係</th></tr></thead>
+    <tbody>
+      <tr><td>項目（名前）</td><td>図鑑に登録する知識・情報の1件。名前を持つ。</td></tr>
+      <tr><td>説明</td><td>1つの項目に複数登録できる。取り込んだ情報も、説明の一つとして同じ項目に追加する。</td></tr>
+      <tr><td>タグ</td><td>1つの項目に複数付けられ、1つのタグを複数の項目に付けられる。名前の変更・削除ができる。</td></tr>
+      <tr><td>項目とタグの関連</td><td>項目とタグを結びつける情報。タグを削除したときは、この関連だけを外し、項目は残す。</td></tr>
+    </tbody>
+  </table>
+  <p class="small">※ER図とテーブル定義書（項目の型・制約など）は別ドキュメントとして作成し、本書からリンクする。</p>
+
+  <div class="note"><strong>補足：</strong>共有機能を採用する場合は、認証・公開範囲・不適切な内容への対応などの要件を別途定める（7章 未決事項）。</div>
 </section>
 
 <section id="flow">
@@ -193,13 +236,13 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
     <div class="flow-step"><strong>2. 図鑑データを閲覧・管理</strong><br><span class="small">一覧・詳細画面で確認し、検索・編集・削除・タグ管理を行う</span></div>
     <div class="arrow">↓</div>
     <div class="flow-split">
-      <div class="flow-step"><strong>3-A. 自分の情報を公開(将来拡張)</strong><br><span class="small">他のユーザーが検索・閲覧できるようにする</span></div>
-      <div class="flow-step"><strong>3-B. 公開情報を利用(将来拡張)</strong><br><span class="small">他のユーザーが公開した情報を検索・閲覧し、必要に応じて自分の図鑑に取り込む</span></div>
+      <div class="flow-step"><strong>3-A. 自分の情報を公開(実装検討)</strong><br><span class="small">他のユーザーが検索・閲覧できるようにする</span></div>
+      <div class="flow-step"><strong>3-B. 公開情報を利用(実装検討)</strong><br><span class="small">他のユーザーが公開した情報を検索・閲覧し、必要に応じて自分の図鑑に取り込む</span></div>
     </div>
     <div class="arrow">↓</div>
-    <div class="flow-step"><strong>4. 同じ対象の情報を関連付ける（将来拡張）</strong><br><span class="small">複数のユーザーが登録した同じ対象の情報を関連付け、それぞれの説明などを保持したまままとめて参照できるようにする。</span></div>
+    <div class="flow-step"><strong>4. 同じ対象の情報を関連付ける（実装検討）</strong><br><span class="small">複数のユーザーが登録した同じ対象の情報を、同じ対象の項目に説明の一つとして追加し、まとめて参照できるようにする。</span></div>
     <div class="arrow">↓</div>
-    <div class="flow-step"><strong>5. 問題作成機能で活用</strong><br><span class="small">登録した情報や、関連付けた複数の説明を問題作成機能に渡し、問題の作成に活用する。</span></div>
+    <div class="flow-step"><strong>5. 問題作成機能で活用</strong><br><span class="small">登録した情報や、項目に登録された複数の説明を問題作成機能に渡し、問題の作成に活用する。</span></div>
   </div>
   <p class="small">※共有・関連付けは実装を検討している機能であり、上記は想定する利用の流れ。具体的な操作手順は、機能の採用と画面設計に合わせて調整する。</p>
 </section>
@@ -210,48 +253,25 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   <table>
     <thead><tr><th style="width:27%">画面名</th><th>主な内容・操作</th></tr></thead>
     <tbody>
-      <tr><td>ホーム／図鑑一覧</td><td>自分の登録データの一覧、検索欄、新規登録への導線を表示する。検索欄は一覧に置く。</td></tr>
-      <tr><td>データ登録・編集</td><td>名前、説明、タグなどを入力・編集する。</td></tr>
-      <tr><td>データ詳細</td><td>登録情報の詳細を表示し、編集・削除・公開などの操作につなぐ。複数の説明を並べて表示する。</td></tr>
+      <tr><td>ホーム／図鑑一覧</td><td>新規登録・タグ管理への導線を表示する。検索結果も同じ一覧に表示する。</td></tr>
+      <tr><td>データ登録・編集</td><td>名前、説明、タグなどを入力・編集する。説明は複数追加・削除できる。タグは入力時に新規作成できる。</td></tr>
+      <tr><td>データ詳細</td><td>登録情報の詳細を表示し、編集・削除などの操作につなぐ。複数の説明を並べて表示する。</td></tr>
       <tr><td>タグ一覧</td><td>タグ名の確認・その場でタグ名の編集・削除を行う。</td></tr>
-      <tr><td>削除確認(ダイアログ未定)</td><td>データ詳細、タグ一覧から削除を行う場合表示する</td></tr>
-      <tr><td>公開データ検索<span class="badge consider">将来拡張</span></td><td>他のユーザーが公開した情報を検索・閲覧し、自分の図鑑への取り込みを行う。</td></tr>
-      <tr><td>関連付け管理<span class="badge consider">将来拡張</span></td><td>同じ対象に関する情報を確認し、関連付け・関連付け解除を行う案。</td></tr>
+      <tr><td>削除確認(ダイアログ未定)</td><td>データ詳細、タグ一覧から削除を行う場合表示する。</td></tr>
+      <tr><td>公開データ検索<span class="badge consider">実装検討</span></td><td>他のユーザーが公開した情報を検索・閲覧し、自分の図鑑への取り込みを行う。</td></tr>
+      <tr><td>関連付け管理<span class="badge consider">実装検討</span></td><td>同じ対象に関する情報を確認し、関連付け・関連付け解除を行う案。</td></tr>
     </tbody>
   </table>
   <h3>5.2 画面遷移の案</h3>
   <div class="diagram">
-  <pre class="mermaid">
-  flowchart TD
-      H["図鑑一覧・検索結果（ホーム）<br>一覧・検索欄"]
-      T["タグ一覧<br>編集・削除"]
-      D["データ詳細<br>登録内容を表示"]
-      E["データ登録・編集"]
-      X["削除確認"]
-  
-      H -->|検索| H
-      H -->|新規登録| E
-      E -->|保存 / キャンセル| H
-      H -->|タグ管理| T
-      T -->|戻る| H
-      H -->|選択| D
-      D -->|編集| E
-      D -->|削除| X
-      X -->|キャンセル| D
-      X -->|削除完了| H
-  
-      classDef screen fill:#1e3a5f,stroke:#38bdf8,color:#f8fafc
-      classDef confirm fill:#78350f,stroke:#fbbf24,color:#fef3c7
-      class H,T,D,E screen
-      class X confirm
-  </pre>
+    <img src="images/screen-transition-TD.svg" alt="画面遷移図">
   </div>
-  <p class="small">※画面遷移は概略。画面モックアップや実際の操作に合わせて見直す。共有・関連付けは将来拡張のため、この図には含めない</p>
+  <p class="small">※画面遷移は概略。画面モックアップや実際の操作に合わせて見直す。共有・関連付けは実装を検討する段階のため、この図には含めない。</p>
 </section>
 
 <section id="scope">
-  <h2>6. 開発方針・追加機能の検討</h2>
-  <h3>6.1 基本機能と開発の優先順位</h3>
+  <h2>6. スコープ・開発方針</h2>
+  <h3>6.1 初期版で作る機能（優先順位）</h3>
   <ul>
     <li>図鑑データの登録・閲覧・編集・削除</li>
     <li>タグの設定・管理</li>
@@ -260,26 +280,41 @@ footer { text-align: center; color: var(--text-sub); font-size: .85rem; padding:
   </ul>
   <p>まずは、図鑑データの登録・閲覧・編集・削除・検索など、基本機能を完成させることを優先する。データ共有や同じ対象の情報の関連付けは、既存の図鑑・単語帳との差別化につながる一方、実装範囲が広がる可能性があるため、基本機能の進捗や開発期間を踏まえて実装するか検討する。採用する場合も、実現可能な範囲から段階的に追加する。</p>
 
-  <h3>6.2 追加を検討する機能</h3>
+  <h3>6.2 実装検討・追加候補の機能</h3>
   <table>
-    <thead><tr><th style="width:34%">機能</th><th>扱い</th><th>内容</th></tr></thead>
+    <thead><tr><th style="width:34%">機能</th><th>区分</th><th>内容</th></tr></thead>
     <tbody>
       <tr><td>データ共有</td><td><span class="badge consider">実装検討</span></td><td>他のユーザーが公開した情報を検索・閲覧し、自分の図鑑に取り込めるようにする。既存の図鑑・単語帳との差別化につながる。</td></tr>
-      <tr><td>同じ対象の情報の関連付け</td><td><span class="badge consider">実装検討</span></td><td>複数のユーザーが登録した同じ対象の情報を、元の説明などを保持したまままとめて参照できるようにする。共有と組み合わせることで差別化につながる。</td></tr>
-      <tr><td>検索履歴の表示</td><td><span class="badge consider">追加候補</span></td><td>過去に検索した語句を検索欄の下などに表示する。</td></tr>
-      <tr><td>よく検索される語句の表示</td><td><span class="badge consider">追加候補</span></td><td>利用者間でよく検索される語句を表示する。利用状況を集計する仕組みが必要になる。</td></tr>
-      <tr><td>高度な関連付け支援</td><td><span class="badge consider">追加候補</span></td><td>名前やタグなどを手掛かりに、関連付け候補を提示する。ユーザーが情報を登録した際に同じ対象の情報として関連付けられそうな候補を自動的に提示する</td></tr>
-      <tr><td>共有データの管理機能</td><td><span class="badge consider">追加候補</span></td><td>公開状態の変更、取り込みなどを整備する。</td></tr>
-      <tr><td>共有データの誤り報告機能</td><td><span class="badge consider">追加候補</span></td><td>公開されている情報が誤っている場合報告できるようにする。管理者に通知されるか、共有元に直接通知されるかなど詳細は検討する。</td></tr>
+      <tr><td>同じ対象の情報の関連付け</td><td><span class="badge consider">実装検討</span></td><td>複数のユーザーが登録した同じ対象の情報を、同じ対象の項目に説明の一つとして追加する。共有と組み合わせることで差別化につながる。</td></tr>
+      <tr><td>検索履歴の表示</td><td><span class="badge idea">追加候補</span></td><td>過去に検索した語句を検索欄の下などに表示する。</td></tr>
+      <tr><td>よく検索される語句の表示</td><td><span class="badge idea">追加候補</span></td><td>利用者間でよく検索される語句を表示する。利用状況を集計する仕組みが必要になる。</td></tr>
+      <tr><td>高度な関連付け支援</td><td><span class="badge idea">追加候補</span></td><td>名前やタグなどを手掛かりに、関連付け候補を提示する。ユーザーが情報を登録した際に同じ対象の情報として関連付けられそうな候補を自動的に提示する</td></tr>
+      <tr><td>共有データの管理機能</td><td><span class="badge idea">追加候補</span></td><td>公開状態の変更、取り込みなどを整備する。</td></tr>
+      <tr><td>共有データの誤り報告機能</td><td><span class="badge idea">追加候補</span></td><td>公開されている情報が誤っている場合報告できるようにする。管理者に通知されるか、共有元に直接通知されるかなど詳細は検討する。</td></tr>
     </tbody>
   </table>
   <div class="note"><strong>開発方針：</strong>基本機能の完成を優先し、開発期間やチームの進捗を見ながら追加機能を検討する。共有・関連付けは差別化につながるため、実装の負担と効果を踏まえて採否を判断する。(※追加候補はあくまでアイデア段階)</div>
 </section>
 
-<footer>デジタル図鑑アプリ 仕様書（作成中・機能や技術は今後変更する場合があります）</footer>
+<section id="open-issues">
+  <h2>7. 未決事項</h2>
+  <table>
+    <thead><tr><th style="width:27%">項目</th><th>内容</th><th style="width:14%">関連箇所</th></tr></thead>
+    <tbody>
+      <tr><td>使用DB</td><td>ローカルのデータベースをMySQLにするか。サーバーを別に起動する必要がなく導入が軽い構成（SQLiteなど）も含めて検討する。</td><td>3.3、3.4</td></tr>
+      <tr><td>削除確認の形式</td><td>データ詳細・タグ一覧から削除する際の確認を、ダイアログにするか。</td><td>5.1</td></tr>
+      <tr><td>関連付けの方法</td><td>異なる表現で登録された情報を、どのように関連付け、問題作成機能で活用するか。</td><td>2.2.1</td></tr>
+      <tr><td>共有時の認証・公開範囲</td><td>データ共有を採用する場合の、ユーザー認証、公開範囲、不適切な内容への対応。</td><td>3.3</td></tr>
+      <tr><td>誤り報告の通知先</td><td>公開情報の誤りを、管理者に通知するか、共有元に直接通知するか。</td><td>6.2</td></tr>
+      <tr><td>同名の項目の登録</td><td>同じ名前の項目を重複して登録できるようにするか。関連付けの設計にも影響する。</td><td>3.4</td></tr>
+      <tr><td>項目削除時の扱い</td><td>項目を削除したとき、その項目の説明と、タグとの関連をどう扱うか。</td><td>3.4</td></tr>
+      <tr><td>バックアップ・エクスポート</td><td>データをローカルのみに保存するため、PCの故障や再インストールでデータが失われる。バックアップやエクスポートの機能を設けるか。</td><td>3.3</td></tr>
+      <tr><td>性能の目標値</td><td>3.2の目標値（1,000件・1秒以内）が適切か。動作確認の結果を見て見直す。</td><td>3.2</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>デジタル図鑑アプリ 仕様書・要件定義書（作成中・機能や技術は今後変更する場合があります）</footer>
 </div>
-<script>
-mermaid.initialize({startOnLoad:true,theme:'dark',securityLevel:'loose',flowchart:{htmlLabels:true,useMaxWidth:true,curve:'basis',nodeSpacing:40,rankSpacing:50}});
-</script>
 </body>
 </html>
