@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>画面定義書(案) - デジタル図鑑アプリ</title>
+<link rel="stylesheet" href="common.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>画面定義書（案）</h1>
+  <div class="meta-info">外部設計（画面）</div>
+  <div class="nav-group">
+    <a class="btn" href="screen-definition.html">画面定義書</a>
+    <a class="btn" href="function-spec.html">機能仕様書</a>
+    <a class="btn" href="mockup.html">モックアップ</a>
+  </div>
+</header>
+
+<section>
+  <h2>1. 各画面</h2>
+
+  <h3 id="home">1.1 ホーム／図鑑一覧</h3>
+  <table>
+    <thead><tr><th style="width:22%">項目</th><th style="width:14%">表示／入力</th><th style="width:10%">必須</th><th style="width:16%">制限</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>単語の一覧</td><td>表示</td><td>－</td><td>－</td><td>単語名と、付いているタグを表示する</td></tr>
+      <tr><td>検索欄</td><td>入力</td><td>任意</td><td>－</td><td>同じ一覧の中で絞り込む。別画面にはしない</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:30%">操作</th><th>結果</th><th style="width:26%">移動先</th></tr></thead>
+    <tbody>
+      <tr><td>検索欄に入力</td><td>単語名・説明・タグを対象に、一覧を絞り込む</td><td>同じ画面</td></tr>
+      <tr><td>単語を選択</td><td>－</td><td>データ詳細</td></tr>
+      <tr><td>「新規登録」</td><td>－</td><td>データ登録・編集（新規）</td></tr>
+      <tr><td>「タグ管理」</td><td>－</td><td>タグ一覧</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="edit">1.2 データ登録・編集</h3>
+  <table>
+    <thead><tr><th style="width:22%">項目</th><th style="width:14%">表示／入力</th><th style="width:14%">必須</th><th style="width:16%">制限</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>単語名</td><td>入力</td><td>必須</td><td>100文字以内</td><td></td></tr>
+      <tr><td>説明</td><td>入力（複数）</td><td>1件以上必須</td><td>－</td><td>「追加」「削除」で増減できる</td></tr>
+      <tr><td>タグ</td><td>入力（複数）</td><td>任意</td><td>1つ50文字以内</td><td>未登録の名前を入力すると、新しいタグとして作られる</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:30%">操作</th><th>結果</th><th style="width:26%">移動先</th></tr></thead>
+    <tbody>
+      <tr><td>「保存」</td><td>新規は入力内容を登録し、編集は変更内容を更新する</td><td>新規：ホーム ／ 編集：データ詳細</td></tr>
+      <tr><td>「キャンセル」</td><td>何も保存しない</td><td>新規：ホーム ／ 編集：データ詳細</td></tr>
+      <tr><td>説明の「追加」「削除」、タグの追加・外す</td><td>入力欄が増減する</td><td>同じ画面</td></tr>
+    </tbody>
+  </table>
+  <p><strong>入力エラー：</strong>項目の制限に合わないまま「保存」を押すと、保存せずに同じ画面にとどまり、該当の項目にメッセージを表示する（文言は2章）。</p>
+
+  <h3 id="detail">1.3 データ詳細</h3>
+  <table>
+    <thead><tr><th style="width:22%">項目</th><th style="width:14%">表示／入力</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>単語名</td><td>表示</td><td></td></tr>
+      <tr><td>説明</td><td>表示（複数）</td><td>複数を並べて表示する</td></tr>
+      <tr><td>タグ</td><td>表示（複数）</td><td></td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:30%">操作</th><th>結果</th><th style="width:26%">移動先</th></tr></thead>
+    <tbody>
+      <tr><td>「編集」</td><td>－</td><td>データ登録・編集（編集）</td></tr>
+      <tr><td>「削除」</td><td>削除の確認を表示する</td><td>削除確認（データ）</td></tr>
+      <tr><td>「戻る」</td><td>－</td><td>ホーム</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="tags">1.4 タグ一覧</h3>
+  <table>
+    <thead><tr><th style="width:22%">項目</th><th style="width:20%">表示／入力</th><th style="width:10%">必須</th><th style="width:16%">制限</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>タグ名</td><td>表示・入力（その場で編集）</td><td>必須</td><td>50文字以内</td><td>既にあるタグ名には変更できない</td></tr>
+      <tr><td>使用件数</td><td>表示</td><td>－</td><td>－</td><td>そのタグが付いている単語の数</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:30%">操作</th><th>結果</th><th style="width:26%">移動先</th></tr></thead>
+    <tbody>
+      <tr><td>タグ名を編集して確定</td><td>タグ名を変更する</td><td>同じ画面</td></tr>
+      <tr><td>「×」</td><td>削除の確認を表示する</td><td>削除確認（タグ）</td></tr>
+      <tr><td>「戻る」</td><td>－</td><td>ホーム</td></tr>
+    </tbody>
+  </table>
+  <p><strong>入力エラー：</strong>変更は反映されず、メッセージを表示する（文言は2章）。<br><strong>備考：</strong>「新規追加」のボタンは置かない。タグは、登録・編集画面で入力したときに作られる。</p>
+
+  <h3 id="confirm">1.5 削除確認</h3>
+  <table>
+    <thead><tr><th style="width:22%">項目</th><th style="width:14%">表示／入力</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>削除する対象の名前</td><td>表示</td><td>データ削除確認は単語名、タグ削除確認はタグ名</td></tr>
+      <tr><td>確認メッセージ</td><td>表示</td><td>文言は2章</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:30%">操作</th><th>結果</th><th style="width:26%">移動先</th></tr></thead>
+    <tbody>
+      <tr><td>データ：「削除する」</td><td>単語と、その説明を削除する</td><td>ホーム</td></tr>
+      <tr><td>データ：「キャンセル」</td><td>何も削除しない</td><td>データ詳細</td></tr>
+      <tr><td>タグ：「削除する」</td><td>タグを削除する。付いていた単語からはタグが外れ、単語は残る</td><td>タグ一覧</td></tr>
+      <tr><td>タグ：「キャンセル」</td><td>何も削除しない</td><td>タグ一覧</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2 id="messages">2. メッセージ</h2>
+  <table>
+    <thead><tr><th style="width:20%">場面</th><th style="width:30%">表示する条件</th><th>文言</th></tr></thead>
+    <tbody>
+      <tr><td>単語名が空</td><td>単語名が未入力で「保存」</td><td>単語名を入力してください。</td></tr>
+      <tr><td>文字数超過</td><td>制限を超えて入力して「保存」または確定</td><td>{項目名}は{上限}文字以内で入力してください。</td></tr>
+      <tr><td>タグ名の重複</td><td>既にあるタグ名に変更しようとした</td><td>同じ名前のタグが既にあります。</td></tr>
+      <tr><td>データ削除確認</td><td>詳細で「削除」</td><td>「{単語名}」を削除します。説明も一緒に削除されます。よろしいですか？</td></tr>
+      <tr><td>タグ削除確認</td><td>タグ一覧で「×」</td><td>タグ「{タグ名}」を削除します。全ての単語から外されます（単語は残ります）。よろしいですか？</td></tr>
+      <tr><td>登録が0件</td><td>一覧に単語が1件もない</td><td>まだ登録がありません。「新規登録」から追加してください。</td></tr>
+      <tr><td>検索で該当なし</td><td>検索結果が0件</td><td>該当する単語が見つかりません。</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>デジタル図鑑アプリ 画面定義書（ドラフト）</footer>
+</div>
+</body>
+</html><!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>画面定義書(案) - デジタル図鑑アプリ</title>
+<link rel="stylesheet" href="common.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>画面定義書（案）</h1>
+  <div class="meta-info">外部設計（画面）</div>
+  <div class="nav-group">
+    <a class="btn" href="screen-definition.html">画面定義書</a>
+    <a class="btn" href="function-spec.html">機能仕様書</a>
+  </div>
+</header>
+
+<section>
+  <h2>1. 各画面</h2>
+
+  <h3 id="home">1.1 ホーム／図鑑一覧</h3>
+  <table>
+    <thead><tr><th style="width:22%">項目</th><th style="width:14%">表示／入力</th><th style="width:10%">必須</th><th style="width:16%">制限</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>単語の一覧</td><td>表示</td><td>－</td><td>－</td><td>単語名と、付いているタグを表示する</td></tr>
+      <tr><td>検索欄</td><td>入力</td><td>任意</td><td>－</td><td>同じ一覧の中で絞り込む。別画面にはしない</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:30%">操作</th><th>結果</th><th style="width:26%">移動先</th></tr></thead>
+    <tbody>
+      <tr><td>検索欄に入力</td><td>単語名・説明・タグを対象に、一覧を絞り込む</td><td>同じ画面</td></tr>
+      <tr><td>単語を選択</td><td>－</td><td>データ詳細</td></tr>
+      <tr><td>「新規登録」</td><td>－</td><td>データ登録・編集（新規）</td></tr>
+      <tr><td>「タグ管理」</td><td>－</td><td>タグ一覧</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="edit">1.2 データ登録・編集</h3>
+  <table>
+    <thead><tr><th style="width:22%">項目</th><th style="width:14%">表示／入力</th><th style="width:14%">必須</th><th style="width:16%">制限</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>単語名</td><td>入力</td><td>必須</td><td>100文字以内</td><td></td></tr>
+      <tr><td>説明</td><td>入力（複数）</td><td>1件以上必須</td><td>－</td><td>「追加」「削除」で増減できる</td></tr>
+      <tr><td>タグ</td><td>入力（複数）</td><td>任意</td><td>1つ50文字以内</td><td>未登録の名前を入力すると、新しいタグとして作られる</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:30%">操作</th><th>結果</th><th style="width:26%">移動先</th></tr></thead>
+    <tbody>
+      <tr><td>「保存」</td><td>新規は入力内容を登録し、編集は変更内容を更新する</td><td>新規：ホーム ／ 編集：データ詳細</td></tr>
+      <tr><td>「キャンセル」</td><td>何も保存しない</td><td>新規：ホーム ／ 編集：データ詳細</td></tr>
+      <tr><td>説明の「追加」「削除」、タグの追加・外す</td><td>入力欄が増減する</td><td>同じ画面</td></tr>
+    </tbody>
+  </table>
+  <p><strong>入力エラー：</strong>項目の制限に合わないまま「保存」を押すと、保存せずに同じ画面にとどまり、該当の項目にメッセージを表示する（文言は2章）。</p>
+
+  <h3 id="detail">1.3 データ詳細</h3>
+  <table>
+    <thead><tr><th style="width:22%">項目</th><th style="width:14%">表示／入力</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>単語名</td><td>表示</td><td></td></tr>
+      <tr><td>説明</td><td>表示（複数）</td><td>複数を並べて表示する</td></tr>
+      <tr><td>タグ</td><td>表示（複数）</td><td></td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:30%">操作</th><th>結果</th><th style="width:26%">移動先</th></tr></thead>
+    <tbody>
+      <tr><td>「編集」</td><td>－</td><td>データ登録・編集（編集）</td></tr>
+      <tr><td>「削除」</td><td>削除の確認を表示する</td><td>削除確認（データ）</td></tr>
+      <tr><td>「戻る」</td><td>－</td><td>ホーム</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="tags">1.4 タグ一覧</h3>
+  <table>
+    <thead><tr><th style="width:22%">項目</th><th style="width:20%">表示／入力</th><th style="width:10%">必須</th><th style="width:16%">制限</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>タグ名</td><td>表示・入力（その場で編集）</td><td>必須</td><td>50文字以内</td><td>既にあるタグ名には変更できない</td></tr>
+      <tr><td>使用件数</td><td>表示</td><td>－</td><td>－</td><td>そのタグが付いている単語の数</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:30%">操作</th><th>結果</th><th style="width:26%">移動先</th></tr></thead>
+    <tbody>
+      <tr><td>タグ名を編集して確定</td><td>タグ名を変更する</td><td>同じ画面</td></tr>
+      <tr><td>「×」</td><td>削除の確認を表示する</td><td>削除確認（タグ）</td></tr>
+      <tr><td>「戻る」</td><td>－</td><td>ホーム</td></tr>
+    </tbody>
+  </table>
+  <p><strong>入力エラー：</strong>変更は反映されず、メッセージを表示する（文言は2章）。<br><strong>備考：</strong>「新規追加」のボタンは置かない。タグは、登録・編集画面で入力したときに作られる。</p>
+
+  <h3 id="confirm">1.5 削除確認</h3>
+  <table>
+    <thead><tr><th style="width:22%">項目</th><th style="width:14%">表示／入力</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>削除する対象の名前</td><td>表示</td><td>データ削除確認は単語名、タグ削除確認はタグ名</td></tr>
+      <tr><td>確認メッセージ</td><td>表示</td><td>文言は2章</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:30%">操作</th><th>結果</th><th style="width:26%">移動先</th></tr></thead>
+    <tbody>
+      <tr><td>データ：「削除する」</td><td>単語と、その説明を削除する</td><td>ホーム</td></tr>
+      <tr><td>データ：「キャンセル」</td><td>何も削除しない</td><td>データ詳細</td></tr>
+      <tr><td>タグ：「削除する」</td><td>タグを削除する。付いていた単語からはタグが外れ、単語は残る</td><td>タグ一覧</td></tr>
+      <tr><td>タグ：「キャンセル」</td><td>何も削除しない</td><td>タグ一覧</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2 id="messages">2. メッセージ</h2>
+  <table>
+    <thead><tr><th style="width:20%">場面</th><th style="width:30%">表示する条件</th><th>文言</th></tr></thead>
+    <tbody>
+      <tr><td>単語名が空</td><td>単語名が未入力で「保存」</td><td>単語名を入力してください。</td></tr>
+      <tr><td>文字数超過</td><td>制限を超えて入力して「保存」または確定</td><td>{項目名}は{上限}文字以内で入力してください。</td></tr>
+      <tr><td>タグ名の重複</td><td>既にあるタグ名に変更しようとした</td><td>同じ名前のタグが既にあります。</td></tr>
+      <tr><td>データ削除確認</td><td>詳細で「削除」</td><td>「{単語名}」を削除します。説明も一緒に削除されます。よろしいですか？</td></tr>
+      <tr><td>タグ削除確認</td><td>タグ一覧で「×」</td><td>タグ「{タグ名}」を削除します。全ての単語から外されます（単語は残ります）。よろしいですか？</td></tr>
+      <tr><td>登録が0件</td><td>一覧に単語が1件もない</td><td>まだ登録がありません。「新規登録」から追加してください。</td></tr>
+      <tr><td>検索で該当なし</td><td>検索結果が0件</td><td>該当する単語が見つかりません。</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>デジタル図鑑アプリ 画面定義書（ドラフト）</footer>
+</div>
+</body>
+</html>

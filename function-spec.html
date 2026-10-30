@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>機能仕様書(案) - デジタル図鑑アプリ</title>
+<link rel="stylesheet" href="common.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>機能仕様書（案）</h1>
+  <div class="meta-info">外部設計（機能）</div>
+  <div class="nav-group">
+    <a class="btn" href="screen-definition.html">画面定義書</a>
+    <a class="btn" href="function-spec.html">機能仕様書</a>
+    <a class="btn" href="mockup.html">モックアップ</a>
+  </div>
+</header>
+
+<section>
+  <h2>1. 機能一覧</h2>
+  <table>
+    <thead><tr><th style="width:27%">機能</th><th>概要</th><th style="width:26%">操作する画面</th></tr></thead>
+    <tbody>
+      <tr><td><a href="#register">データの登録</a></td><td>単語名・説明・タグを入力して保存する</td><td>データ登録・編集</td></tr>
+      <tr><td><a href="#view">データの閲覧</a></td><td>一覧と詳細で登録内容を確認する</td><td>ホーム／図鑑一覧、データ詳細</td></tr>
+      <tr><td><a href="#update">データの編集</a></td><td>登録済みの単語名・説明・タグを変更する</td><td>データ登録・編集</td></tr>
+      <tr><td><a href="#delete">データの削除</a></td><td>確認のうえ、単語と説明を削除する</td><td>データ詳細、削除確認</td></tr>
+      <tr><td><a href="#search">検索</a></td><td>単語名・説明・タグで一覧を絞り込む</td><td>ホーム／図鑑一覧</td></tr>
+      <tr><td><a href="#tag">タグの管理</a></td><td>タグ名の変更、タグの削除</td><td>タグ一覧、削除確認</td></tr>
+      <tr><td><a href="#link">問題作成機能との連携</a></td><td>登録した説明を問題作成に利用できる</td><td>－</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>2. 各機能の振る舞い</h2>
+
+  <h3 id="register">2.1 データの登録</h3>
+  <table>
+    <tbody>
+      <tr><th style="width:20%">きっかけ</th><td>ホームの「新規登録」から入力画面を開き、「保存」する</td></tr>
+      <tr><th>入力ルール</th><td>単語名は必須・100文字以内<br>説明は複数登録でき、1件以上必須<br>タグは複数付けられ、1つ50文字以内</td></tr>
+      <tr><th>保存したとき</th><td>入力内容を、単語・説明・タグとして登録する</td></tr>
+      <tr><th>タグの扱い</th><td>入力したタグが未登録なら、新しいタグとして作る<br>既にある名前なら、そのタグを使う<br>同じタグを二重に入力したら、1つにまとめる</td></tr>
+      <tr><th>入力エラーのとき</th><td>エラーメッセージを表示し、何も保存しない</td></tr>
+      <tr><th>途中で失敗したとき</th><td>一部だけが保存された状態にはしない（全部保存するか、全部保存しない）</td></tr>
+      <tr><th>キャンセル</th><td>何も保存されない</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="view">2.2 データの閲覧</h3>
+  <table>
+    <tbody>
+      <tr><th style="width:20%">一覧</th><td>登録されている単語を一覧にし、単語名と付いているタグを表示する<br>登録が0件のときは、まだ登録がないことを伝える</td></tr>
+      <tr><th>詳細</th><td>1つの単語の名前・説明（複数）・タグを表示する</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="update">2.3 データの編集</h3>
+  <table>
+    <tbody>
+      <tr><th style="width:20%">きっかけ</th><td>データ詳細の「編集」</td></tr>
+      <tr><th>開いたとき</th><td>現在の単語名・説明・タグが入った状態で開く</td></tr>
+      <tr><th>変更できること</th><td>単語名の変更、説明の追加・変更・削除、タグの付け外し・新しいタグの作成</td></tr>
+      <tr><th>入力ルール</th><td>登録と同じ（単語名は必須・100文字以内、説明は1件以上、タグは1つ50文字以内）</td></tr>
+      <tr><th>保存したとき</th><td>変更を反映する。外した説明は削除される<br>外したタグは、その単語から外れるだけで、タグそのものは残る</td></tr>
+      <tr><th>キャンセル</th><td>変更を捨てて、元の内容のままにする</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="delete">2.4 データの削除</h3>
+  <table>
+    <tbody>
+      <tr><th style="width:20%">きっかけ</th><td>データ詳細の「削除」</td></tr>
+      <tr><th>確認</th><td>削除する単語名と、説明も一緒に消えることを伝える</td></tr>
+      <tr><th>削除したとき</th><td>単語とその説明を削除し、その単語に付いていたタグとの関連も外す<br><strong>タグそのものは残る</strong>（ほかの単語に付いていなくても、タグ一覧に残る）</td></tr>
+      <tr><th>キャンセル</th><td>何も削除しない</td></tr>
+      <tr><th>元に戻す</th><td>削除したデータは元に戻せない</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="search">2.5 検索</h3>
+  <table>
+    <tbody>
+      <tr><th style="width:20%">場所</th><td>ホームの検索欄から行い、同じ一覧の中で絞り込む</td></tr>
+      <tr><th>検索の対象</th><td>単語名、説明、タグ名</td></tr>
+      <tr><th>一致のしかた</th><td>部分一致。複数の語を入れたときは、すべて含むものを探す（AND）</td></tr>
+      <tr><th>検索欄が空のとき</th><td>全件を表示する</td></tr>
+      <tr><th>該当がないとき</th><td>該当なしと分かる表示を出す</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="tag">2.6 タグの管理</h3>
+  <table>
+    <tbody>
+      <tr><th style="width:20%">一覧の表示</th><td>タグ名と、そのタグが付いている単語の数を表示する</td></tr>
+      <tr><th>名前の変更</th><td>タグ名をその場で変更する<br>空の名前、50文字を超える名前、既にあるタグ名には変更できない<br>変更後は、そのタグが付いているすべての単語に新しい名前で表示される</td></tr>
+      <tr><th>削除</th><td>「×」を押すと確認を出し、削除する<br>タグが消え、付いていた単語からタグだけが外れる。<strong>単語は残る</strong><br>確認メッセージに、外れる単語の件数を出す</td></tr>
+      <tr><th>新しいタグの作り方</th><td>タグ一覧からは作らない。登録・編集でタグを入力したときに作る</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>3. 共通の決まり</h2>
+  <table>
+    <thead><tr><th style="width:27%">項目</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td>入力エラーのとき</td><td>エラーメッセージを表示し、保存や変更は行わない</td></tr>
+      <tr><td>削除の前の確認</td><td>データ・タグのどちらの削除も、確認を経てから実行する</td></tr>
+      <tr><td>保存先</td><td>利用者のパソコン内。ネットワークなしで使える</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2 id="link">4. 問題作成機能との連携(未定)</h2>
+  <p>図鑑に登録した情報のうち、1つの単語に登録された複数の説明を、問題作成機能が利用できる。問題の作成方法や出題形式は、問題作成機能の仕様に従う。</p>
+</section>
+
+<footer>デジタル図鑑アプリ 機能仕様書（ドラフト）</footer>
+</div>
+</body>
+</html>
